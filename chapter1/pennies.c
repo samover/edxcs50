@@ -4,10 +4,10 @@
 #include <cs50.h>
 #include <math.h>
 
-int getDaysInMonthFromUser(void);
-int getStartingPenniesFromUser(void);
-long long getTotalPenniesForDaysInMonth(int numDay, int startingPennies, long long sum);
-double convertPenniesToDollars(long long pennies);
+int getDays(void);
+int getPennies(void);
+long long getTotal(int numDay, int numPennies, long long sum);
+double converter(long long pennies);
 
 /*
  * If ever given the choice between $10,000,000 or a month’s worth of pennies,
@@ -20,20 +20,22 @@ double convertPenniesToDollars(long long pennies);
  *
  */
 
-int main()
+int main(void)
 {
-    int days = getDaysInMonthFromUser();
-    int numPennies = getStartingPenniesFromUser();
-    long long totalPennies = getTotalPenniesForDaysInMonth(days, numPennies, 0);
-    double dollars = convertPenniesToDollars(totalPennies);
+    int days = getDays();
+    int numPennies = getPennies();
+    long long totalPennies = getTotal(days, numPennies, 0);
+    double dollars = converter(totalPennies);
 
     printf("$%.2f\n", dollars);
 }
 
-int getDaysInMonthFromUser() {
+int getDays()
+{
     int days = 0;
 
-    while(days < 28 || days > 31) {
+    while(days < 28 || days > 31)
+    {
         printf("How many days are there in the month?");
         days = get_int();
     }
@@ -41,10 +43,12 @@ int getDaysInMonthFromUser() {
     return days;
 }
 
-int getStartingPenniesFromUser() {
+int getPennies()
+{
     int numPennies = 0;
 
-    while(numPennies <= 0) {
+    while(numPennies <= 0)
+    {
         printf("How many pennies do you receive on the first day?");
         numPennies = get_int();
     }
@@ -52,19 +56,21 @@ int getStartingPenniesFromUser() {
     return numPennies;
 }
 
-long long getTotalPenniesForDaysInMonth(int numDay, int startingPennies, long long sum) {
+long long getTotal(int numDay, int numPennies, long long sum)
+{
     numDay -= 1;
 
     if (numDay == 0)
     {
-        return sum + startingPennies;
+        return sum + numPennies;
     }
 
-    sum += pow(2, numDay) * startingPennies;
+    sum += pow(2, numDay) * numPennies;
 
-    return getTotalPenniesForDaysInMonth(numDay, startingPennies, sum);
+    return getTotal(numDay, numPennies, sum);
 }
 
-double convertPenniesToDollars(long long pennies) {
+double converter(long long pennies)
+{
     return pennies / 100.00;
 }
